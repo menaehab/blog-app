@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\ContactController;
 Route::controller(ThemeController::class)->name('theme.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/category/', 'category')->name('category');
@@ -12,6 +13,7 @@ Route::controller(ThemeController::class)->name('theme.')->group(function () {
 });
 
 Route::post('/subscriber/store',[SubscriberController::class,'store'])->name('subscribe.store');
+Route::post('/contact/store',[ContactController::class,'store'])->name('contact.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
