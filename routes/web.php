@@ -3,15 +3,15 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ThemeController;
-
+use App\Http\Controllers\SubscriberController;
 Route::controller(ThemeController::class)->name('theme.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/category/', 'category')->name('category');
     Route::get('/contact', 'contact')->name('contact');
     Route::get('/singleBlog', 'singleBlog')->name('singleBlog');
-    //Route::get('/register', 'register')->name('register');
-    //Route::get('/login', 'login')->name('login');
 });
+
+Route::post('/subscriber/store',[SubscriberController::class,'store'])->name('subscribe.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
