@@ -10,7 +10,10 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <form action="{{ route('blogs.store') }}" class="form-contact contact_form" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+            <form action="{{ route('blogs.store') }}" class="form-contact contact_form" method="post" id="contactForm" enctype="multipart/form-data">
               @csrf
             <div class="row">
               <div class="col-12">
@@ -20,12 +23,12 @@
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="form-group mt-3">
-                  <input class="form-control border" name="image" id="image" type="file"  value="{{ old('image') }}">
-                    @error('image')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                  <div class="form-group mt-3">
+                      <input class="form-control border" name="image" id="image" type="file">
+                      @error('image')
+                      <div class="text-danger">{{ $message }}</div>
+                      @enderror
+                  </div>
               </div>
                 <div class="col-12">
                     <div class="form-group mt-3">
@@ -33,7 +36,9 @@
                             <option value="">Select Category</option>
                             @if(count($categories) > 0)
                                 @foreach($categories as $category)
-                                    <option value="{{ old('category_id') }}">{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
                                 @endforeach
                             @endif
                         </select>
