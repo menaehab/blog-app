@@ -21,17 +21,20 @@
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                                aria-expanded="false">Categories</a>
                             @if(count($categories) > 0)
-                            <ul class="dropdown-menu">
-                                @foreach($categories as $category)
-                                <li class="nav-item"><a class="nav-link" href="{{ route('theme.category') }}">{{ $category->name }}</a></li>
-                                @endforeach
-                            </ul>
+                                <ul class="dropdown-menu">
+                                    @foreach($categories as $category)
+                                        <li class="nav-item"><a class="nav-link" href="{{ route('theme.category') }}">{{ $category->name }}</a></li>
+                                    @endforeach
+                                </ul>
                             @endif
                         </li>
                         <li class="nav-item @yield('contact-active')"><a class="nav-link" href="{{ route('theme.contact') }}">Contact</a></li>
                     </ul>
+
                     <!-- Add new blog -->
-                    <a href="#" class="btn btn-sm btn-primary mr-2">Add New</a>
+                    @if(Auth::check())
+                        <a href="{{ route('blogs.create') }}" class="btn btn-sm btn-primary mr-2">Add New</a>
+                    @endif
                     <!-- End - Add new blog -->
 
                     <ul class="nav navbar-nav navbar-right navbar-social">
@@ -41,17 +44,19 @@
                                    aria-expanded="false">{{ auth::user()->name }}</a>
                                 <ul class="dropdown-menu">
                                     <li class="nav-item"><a class="nav-link" href="blog-details.html">My Blogs</a></li>
-
                                     <li class="nav-item">
-                                        <form method="post" action="{{ route('logout') }}">
+                                        <form method="post" action="{{ route('logout') }}" id="logout-form">
                                             @csrf
-                                            <a href="javascript:$('form').submit();" class="nav-link">Log Out</a>
+                                            <a href="javascript:document.getElementById('logout-form').submit();" class="nav-link">Log Out</a>
                                         </form>
                                     </li>
                                 </ul>
                             </li>
                         @else
-                            <a href="{{ route('register') }}" class="btn btn-sm btn-warning">Register / Login</a>
+                            <div class="d-flex">
+                                <a href="{{ route('register') }}" class="btn btn-sm btn-warning">Register</a>
+                                <a href="{{ route('login') }}" class="btn btn-sm btn-primary ml-2">Login</a>
+                            </div>
                         @endif
                     </ul>
                 </div>
