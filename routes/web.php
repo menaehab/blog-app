@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\SubscriberController;
@@ -23,19 +22,9 @@ Route::post('/contact/store',[ContactController::class,'store'])->name('contact.
 
 //Blog Route
 Route::get('/my-blogs',[BlogController::class,'myBlogs'])->name('blogs.my-blogs');
-Route::resource('blogs', BlogController::class);
+Route::resource('blogs', BlogController::class)->except(['index']);
 
 //Comment Route
 Route::post('comment/store',[CommentController::class,'store'])->name('comment.store');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';

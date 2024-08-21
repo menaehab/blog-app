@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 class ThemeController extends Controller
 {
     public function index() {
-        $blogs = Blog::paginate(4);
-
-        return view('theme.index',compact('blogs'));
+        $blogs = Blog::latest()->paginate(4);
+        $recentBlogs = Blog::latest()->take(3)->get();
+        return view('theme.index',compact('blogs','recentBlogs'));
     }
     public function category($id) {
         $categoryName = Category::find($id)->name;
@@ -20,11 +20,5 @@ class ThemeController extends Controller
     }
     public function contact() {
         return view('theme.contact');
-    }
-    public function login(Request $request) {
-        return view('theme.login');
-    }
-    public function register() {
-        return view('theme.register');
     }
 }
