@@ -10,6 +10,9 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
             <table class="table">
                 <thead>
                 <tr>
@@ -27,8 +30,12 @@
                             <th scope="row">{{ $key }}</th>
                             <td><a href="{{ route('blogs.show',$blog) }}" target="_blank">{{ $blog->title }}</a></td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-sm btn-warning">Edit</a>
-                                <a href="#" class="btn btn-sm btn-danger ml-2">Delete</a>
+                                <a href="{{ route('blogs.edit',$blog) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="{{ route('blogs.destroy',$blog) }}" method="post" id="delete-form" class="d-inline">
+                                    @csrf
+                                    @method('delete')
+                                    <a href="javascript:document.getElementById('delete-form').submit();" class="btn btn-sm btn-danger ml-2">Delete</a>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

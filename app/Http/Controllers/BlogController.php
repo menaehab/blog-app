@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\UpdateBlogRequest;
 use App\Http\Requests\StoreBlogRequest;
 use App\Models\Blog;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Storage;
 class BlogController extends Controller
 {
     /**
@@ -60,15 +61,35 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        //
+        if (Auth::check() && Auth::user()->id == $blog->user_id) {
+            $categories = Category::all();
+            return view('theme.blogs.edit',compact('categories','blog'));
+        }
+        else {
+            return to_route('theme.index');
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Blog $blog)
+    public function update(UpdateBlogRequest $request, Blog $blog)
     {
-        //
+        if (Auth::check() && Auth::user()->id == $blog->user_id) {
+            $data = $request->validated();
+            if ($request->hasFile('image')) {
+                Storage::delete("public/blogs/{$blog->image}");
+                $image = $request->image;
+                $newImageName = time() . '-' . $image->getClientOriginalName();
+                $image->storeAs('blogs', $newImageName, 'public');
+                $data['image'] = $newImageName;
+            }
+            $blog->update($data);
+            return back()->with('success', 'Blog post updated successfully');
+        }
+        else {
+            return to_route('theme.index');
+        }
     }
 
     /**
@@ -76,7 +97,12 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        //
+        if (Auth::check() && Auth::user()->id == $blog->user_id) {
+            Storage::delete("public/blogs/{$blog->image}");
+            $blog->delete();
+            return back()->with('success', 'Blog post deleted successfully');
+        }
+        return to_route('theme.index');
     }
 
     /**
