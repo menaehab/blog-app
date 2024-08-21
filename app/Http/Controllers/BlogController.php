@@ -6,6 +6,7 @@ use App\Http\Requests\Auth\UpdateBlogRequest;
 use App\Http\Requests\StoreBlogRequest;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -53,7 +54,8 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        return view('theme.single-blog',compact('blog'));
+        $comments = Comment::where('blog_id', $blog->id)->get();
+        return view('theme.single-blog',compact('blog','comments'));
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ThemeController;
@@ -23,6 +24,9 @@ Route::post('/contact/store',[ContactController::class,'store'])->name('contact.
 //Blog Route
 Route::get('/my-blogs',[BlogController::class,'myBlogs'])->name('blogs.my-blogs');
 Route::resource('blogs', BlogController::class);
+
+//Comment Route
+Route::post('comment/store',[CommentController::class,'store'])->name('comment.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
